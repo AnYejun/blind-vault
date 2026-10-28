@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🕶️ blind-vault
+<img src="assets/icon.png" width="104" alt="blind-vault logo: a padlock with a closed eye" />
+
+# blind-vault
 
 ### Secrets your AI agent can *use* — but never *see*.
 
@@ -111,9 +113,9 @@ That symlinks the skill into `~/.claude/skills/vault`, makes the CLI executable,
 
 Claude works the CLI. You get a native macOS menu-bar app — **`⌥⌘V`** from anywhere:
 
-<div align="center"><img src="assets/app.png" alt="Blind Vault.app: frameless glass window with real macOS vibrancy — pointer list with scope chips, ID chips and last-used dates; add-a-secret form whose password field goes straight to the Keychain" width="880" /></div>
+<div align="center"><img src="assets/app.png" alt="Blind Vault.app: pointer list with service tiles, env variables, scope chips and last-used dates; every value stays masked in the Keychain" width="880" /></div>
 
-Tauri 2, no dock icon, a sunglasses icon in the menu bar, frameless window with real NSVisualEffectView vibrancy, `esc` to hide. The Rust side calls `security`/`pbcopy` in-process — no server, no port, no token to protect. Build it with `cd app && npx @tauri-apps/cli build`, drop it in `/Applications`, add it to Login Items and forget it's there.
+Tauri 2, no dock icon, a lock icon in the menu bar, frameless window with real NSVisualEffectView vibrancy that follows your light/dark setting, `⌘N` to add a secret, `esc` to hide. The Rust side calls `security`/`pbcopy` in-process — no server, no port, no token to protect. Build it with `cd app && npx @tauri-apps/cli build`, drop it in `/Applications`, add it to Login Items and forget it's there.
 
 Don't want to build a native app? `vault ui` serves the same dashboard as a local-only web page (`127.0.0.1`, per-session token + Origin check against DNS rebinding, python3 stdlib).
 
