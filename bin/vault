@@ -167,15 +167,19 @@ for s in d["secrets"]:
 json.dump(d, open(mf, "w"), indent=2)
 PY
 
+  # Hand the value over via the environment only — never as an argv string,
+  # so it can't show up in `ps` output while the child starts.
   if [ "$no_redact" = 1 ]; then
-    exec env "$envvar=$value" "$@"
+    export "$envvar=$value"
+    unset value
+    exec "$@"
   fi
 
   # Defense in depth: if the child prints the value (curl -v, stack traces,
   # debug logs), scrub it before it reaches whoever is reading the output.
   # Note: stdout/stderr are merged under redaction; --no-redact restores
   # exec semantics (separate streams, TTY) for interactive tools.
-  env "$envvar=$value" "$@" 2>&1 | \
+  ( export "$envvar=$value"; exec "$@" ) 2>&1 | \
     BLINDVAULT_VAL="$value" BLINDVAULT_NAME="$name" python3 -c '
 import os, sys
 v = os.environ.pop("BLINDVAULT_VAL", "").encode()
