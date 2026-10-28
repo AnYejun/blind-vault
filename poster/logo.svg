@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 56" fill="none">
+  <defs>
+    <mask id="bv-eye" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="56">
+      <rect width="48" height="56" fill="#fff"/>
+      <g stroke="#000" stroke-width="3.4" stroke-linecap="round" fill="none">
+        <path d="M13.5 36.5 Q24 46.5 34.5 36.5"/>
+        <path d="M16.4 41.2 L14.4 44.8"/><path d="M24 43.6 V47.6"/><path d="M31.6 41.2 L33.6 44.8"/>
+      </g>
+    </mask>
+  </defs>
+  <path d="M13.5 26 V17.5 a10.5 10.5 0 0 1 21 0 V26" stroke="currentColor" stroke-width="5.4"/>
+  <rect x="3" y="23.5" width="42" height="31" rx="9.5" fill="currentColor" mask="url(#bv-eye)"/>
+</svg>

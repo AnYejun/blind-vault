@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8">
+<title>blind-vault — 글융인의 밤 포스터</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  @page{size:594mm 841mm;margin:0}
+  :root{
+    --ink:#1D1D1F; --ink2:#48484A; --ink3:#86868B; --line:#D2D2D7; --soft:#F5F5F7;
+    --green:#0A8F63; --green-hi:#30D158; --green-soft:#E7F6EF; --red:#D70015;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;
+    --mono:"SF Mono",ui-monospace,Menlo,"Pretendard Variable",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;background:#fff}
+  body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;
+       word-break:keep-all;overflow-wrap:break-word;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:100%;height:841mm;position:relative;overflow:hidden;display:flex;flex-direction:column}
+
+  /* ── header ───────────────────────────────────────── */
+  header{background:#000;color:#fff;padding:13mm 26mm;display:flex;align-items:center;gap:12mm;flex:0 0 auto}
+  header .mark{flex:0 0 auto;width:30mm}
+  header .titles{flex:1;min-width:0}
+  h1{font-size:17mm;line-height:1.1;font-weight:750;letter-spacing:-.025em;white-space:nowrap}
+  h1 .bar{color:#6E6E73;font-weight:400;margin:0 1mm}
+  .byline{display:flex;gap:4mm;align-items:baseline;margin-top:6mm;font-size:7mm;font-weight:650}
+  .byline span{font-weight:500;color:#A1A1A6;font-size:5.6mm}
+  .repo{flex:0 0 auto;display:flex;align-items:center;gap:6mm}
+  .repo .lab{display:flex;flex-direction:column;align-items:flex-end;gap:2.6mm;text-align:right}
+  .repo .gh{display:flex;align-items:center;gap:2.6mm;font-size:6mm;font-weight:700}
+  .repo .gh svg{width:7.5mm;height:7.5mm}
+  .repo .url{font:3.9mm var(--mono);color:#A1A1A6}
+  .repo .go{font-size:4.4mm;font-weight:650;color:var(--green-hi)}
+  .repo .tile{background:#fff;border-radius:4mm;padding:1.2mm}
+  .repo .tile img{width:38mm;height:38mm;display:block}
+
+  /* ── body grid ────────────────────────────────────── */
+  main{flex:1;padding:12mm 26mm 0;display:grid;grid-template-columns:1fr 1fr;column-gap:16mm;row-gap:8.5mm;
+       grid-template-areas:"abs bg" "flow flow" "pri impl" "res con";align-content:start}
+  section{min-width:0}
+  .sec-h{padding-bottom:2.4mm;margin-bottom:4.4mm;border-bottom:.5mm solid var(--ink)}
+  .sec-h b{font-size:9.4mm;font-weight:750;letter-spacing:-.02em}
+  p{font-size:5.15mm;line-height:1.6;color:var(--ink2)}
+  p+p{margin-top:2.6mm}
+  p strong{color:var(--ink);font-weight:650}
+  code{font-family:var(--mono);font-size:.86em;color:var(--ink);background:var(--soft);padding:.2mm 1.3mm;border-radius:1.2mm}
+  .cap{font-size:4.35mm;line-height:1.5;color:var(--ink3);margin-top:2.6mm}
+  .cap b{color:var(--ink);font-weight:650}
+
+  /* journey strip */
+  .journey{display:grid;grid-template-columns:repeat(5,1fr);gap:2mm;margin-top:5mm}
+  .journey div{position:relative;background:var(--soft);border-radius:3mm;padding:3mm 3.2mm 3.2mm}
+  .journey div::after{content:"";position:absolute;right:-1.8mm;top:50%;transform:translateY(-50%);z-index:1;
+        border-left:1.8mm solid var(--ink3);border-top:1.4mm solid transparent;border-bottom:1.4mm solid transparent}
+  .journey div:last-child::after{display:none}
+  .journey div:last-child{background:var(--ink);color:#fff}
+  .journey em{display:block;font:600 3.2mm var(--mono);font-style:normal;color:var(--green);margin-bottom:1mm}
+  .journey div:last-child em{color:var(--green-hi)}
+  .journey b{display:block;font-size:4.3mm;font-weight:700;line-height:1.3}
+
+  /* claude code terminal */
+  .cc{background:#1C1C1E;border-radius:4.5mm;overflow:hidden;margin-bottom:4.5mm}
+  .cc-bar{display:flex;align-items:center;gap:1.8mm;padding:2.6mm 4mm;background:#2C2C2E}
+  .cc-bar i{width:2.6mm;height:2.6mm;border-radius:50%;background:#48484A}
+  .cc-bar span{margin-left:2mm;font:3.4mm var(--mono);color:#8E8E93}
+  .cc-body{padding:4.2mm 5mm 4.4mm;font:3.95mm/1.62 var(--mono);color:#E5E5EA}
+  .cc .u{color:#8E8E93}
+  .cc .u b{color:#E5E5EA;font-weight:500}
+  .cc .a{display:grid;grid-template-columns:4.6mm 1fr;margin-top:2.4mm}
+  .cc .a > i{font-style:normal;color:#F5F5F7}
+  .cc mark{background:none;color:#E8956F;font-weight:700}
+  .cc .t{color:#8E8E93;padding-left:4.6mm;margin-top:.6mm}
+  .cc .t span{color:#E5E5EA}
+  .cc .input{margin-top:3.4mm;border:.3mm solid #48484A;border-radius:1.8mm;padding:1.4mm 3mm;color:#8E8E93;display:flex;align-items:center;gap:2mm}
+  .cc .input i{width:2.2mm;height:4mm;background:#E5E5EA;display:inline-block}
+  .cc .hint{font-size:3.1mm;color:#636366;margin-top:1.2mm;padding-left:1mm}
+  .pains{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3.5mm;margin-top:4mm}
+  .pain{border:.35mm solid var(--line);border-radius:4mm;padding:3.6mm 4mm}
+  .pain b{display:block;font-size:4.8mm;font-weight:700;margin-bottom:1.3mm}
+  .pain span{font-size:4.25mm;line-height:1.48;color:var(--ink2);display:block}
+
+  /* ── fig 1: flow ─────────────────────────────────── */
+  .flow{grid-area:flow}
+  .fig{background:var(--soft);border-radius:6mm;padding:7mm 9mm 6mm;margin-top:4mm}
+  .lanes{display:grid;grid-template-columns:repeat(4,1fr);column-gap:13mm}
+  .lane-label{grid-column:1/-1;font-size:4.4mm;font-weight:700;margin-bottom:3.2mm;display:flex;align-items:center;gap:2.5mm}
+  .lane-label i{width:7mm;height:1.5mm;border-radius:1mm;display:inline-block}
+  .box{background:#fff;border-radius:4mm;padding:3.8mm 4.4mm;box-shadow:0 0 0 .35mm var(--line);position:relative}
+  .box .t{font-size:5mm;font-weight:700;letter-spacing:-.01em}
+  .box .d{font-size:4.05mm;color:var(--ink2);line-height:1.42;margin-top:1mm}
+  .box code{font-size:3.6mm;display:inline-block;margin-top:1.4mm;padding:.5mm 1.6mm;line-height:1.35}
+  .box.ai{background:var(--ink);color:#fff;box-shadow:none}
+  .box.ai .d{color:#C7C7CC}
+  .box.ai code{background:#2C2C2E;color:#fff}
+  .box.val{box-shadow:0 0 0 .5mm var(--green)}
+  .step{position:absolute;top:-3mm;left:-3mm;width:6.6mm;height:6.6mm;border-radius:50%;background:var(--ink);color:#fff;
+        font:700 3.7mm var(--sans);display:grid;place-items:center}
+  .box.val .step{background:var(--green)}
+  .box.ai .step{background:#fff;color:var(--ink);box-shadow:0 0 0 .35mm var(--ink)}
+  .arrow-r::after{content:"";position:absolute;right:-11.2mm;top:50%;width:9.2mm;height:.7mm;background:var(--green);transform:translateY(-50%)}
+  .arrow-r::before{content:"";position:absolute;right:-12mm;top:50%;transform:translateY(-50%);
+        border-left:2.4mm solid var(--green);border-top:1.7mm solid transparent;border-bottom:1.7mm solid transparent}
+  .wall{grid-column:1/-1;position:relative;margin:5mm 0;height:14mm;display:flex;align-items:center;justify-content:flex-start}
+  .wall::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:.7mm dashed var(--ink3)}
+  .wall .lbl{position:relative;background:var(--soft);padding:0 4mm 0 0;font-size:4.15mm;font-weight:650;color:var(--ink2)}
+  .door{position:absolute;top:-5mm;bottom:-5mm;width:0}
+  .door .shaft{position:absolute;left:-.35mm;top:0;bottom:0;width:.7mm;background:var(--ink)}
+  .door .tip{position:absolute;left:-1.7mm;border-left:1.7mm solid transparent;border-right:1.7mm solid transparent}
+  .door.down .tip{bottom:-1mm;border-top:2.4mm solid var(--ink)}
+  .door.up .tip{top:-1mm;border-bottom:2.4mm solid var(--ink)}
+  .door .tag{position:absolute;top:50%;transform:translateY(-50%);left:2.5mm;white-space:nowrap;background:#fff;border-radius:2mm;
+        padding:.6mm 2.2mm;font-size:3.7mm;font-weight:650;box-shadow:0 0 0 .3mm var(--line)}
+  .legend{display:flex;gap:7mm;margin-top:4.5mm;font-size:4mm;color:var(--ink2)}
+  .legend span{display:flex;align-items:center;gap:2mm}
+  .legend i{width:6mm;height:1.4mm;border-radius:1mm;display:inline-block}
+
+
+  /* ── fig 1 v2: terminal-level ───────────────────── */
+  .fig.cli{padding:6mm 7mm 6mm}
+  .screens{display:grid;grid-template-columns:1fr 1fr;gap:7mm}
+  .scr-h{display:flex;align-items:center;gap:3mm;margin-bottom:2.4mm;font-size:4.1mm;color:var(--ink2);font-weight:600}
+  .pill{font-size:4mm;font-weight:750;padding:1mm 3.2mm;border-radius:99px;color:#fff}
+  .pill.red{background:var(--red)} .pill.green{background:var(--green)}
+  .scr{display:flex;flex-direction:column}
+  .tw{flex:1;background:#0B0B0C;border-radius:3.5mm;padding:3.8mm 4.6mm;font:4.05mm/1.7 var(--mono);color:#D1D1D6}
+  .scr.bad .tw{box-shadow:0 0 0 .6mm var(--red)}
+  .scr.good .tw{box-shadow:0 0 0 .6mm var(--green)}
+  .tw .l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tw .p{color:var(--green-hi)}
+  .tw .lk{color:#fff;background:#B3001B;border-radius:1mm;padding:0 1mm;font-weight:700}
+  .tw .dim{color:#8E8E93}
+  .tw .ok{color:#fff}
+  .tw em{font-style:normal;font-family:var(--sans);font-weight:650;font-size:3.8mm;margin-left:2.5mm;color:#FF9F0A}
+  .scr.good .tw em{color:var(--green-hi)}
+  .scr-note{font-size:4.3mm;line-height:1.45;color:var(--ink2);margin-top:2.2mm}
+  .scr-note b{color:var(--ink)}
+  .edge{position:relative;display:flex;align-items:center;justify-content:space-between;margin:6mm 0 5mm;height:9mm}
+  .edge::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:.8mm dashed var(--ink)}
+  .edge span{position:relative;background:var(--soft);font-size:4.4mm;font-weight:700;padding:0 2.5mm}
+  .edge .lbl{font-weight:650;color:var(--ink2);font-size:4.2mm}
+  .edge .dn{color:var(--ink);padding-left:0} .edge .upa{color:var(--green);padding-right:0}
+  .pipe{display:grid;grid-template-columns:repeat(6,1fr);column-gap:6mm}
+  .st{position:relative;background:#fff;border-radius:3.5mm;padding:3.6mm 3.4mm 3.4mm;box-shadow:0 0 0 .35mm var(--line);display:flex;flex-direction:column;gap:1.4mm}
+  .st i{position:absolute;top:-3mm;left:-2.4mm;width:6.4mm;height:6.4mm;border-radius:50%;background:var(--ink);color:#fff;font:700 3.6mm var(--sans);font-style:normal;display:grid;place-items:center}
+  .st b{font-size:5mm;font-weight:750;letter-spacing:-.01em}
+  .st code{font-size:3.45mm;line-height:1.35;background:var(--soft);padding:.8mm 1.4mm;white-space:normal;word-break:break-all}
+  .st span{font-size:3.95mm;line-height:1.42;color:var(--ink2)}
+  .st span b{font-size:inherit;color:var(--red)}
+  .st u{text-decoration:none;color:var(--red);font-weight:650}
+  .st.gate{background:var(--ink);box-shadow:none} .st.gate b{color:#fff} .st.gate span{color:#D1D1D6} .st.gate span b{color:#FF6961}
+  .st.gate code{background:#2C2C2E;color:#fff} .st.gate i{background:#fff;color:var(--ink)}
+  .st.val{box-shadow:0 0 0 .55mm var(--green)} .st.val i{background:var(--green)}
+  .st:not(:last-child)::after{content:"";position:absolute;right:-5mm;top:50%;transform:translateY(-50%);
+       border-left:2.2mm solid var(--ink3);border-top:1.6mm solid transparent;border-bottom:1.6mm solid transparent}
+  .st.val:not(:last-child)::after,.st.gate::after{border-left-color:var(--green)}
+  .zone{display:grid;grid-template-columns:repeat(6,1fr);column-gap:6mm;margin-top:2.6mm}
+  .zb{grid-column:3/6;border:.6mm solid var(--green);border-top:none;border-radius:0 0 3mm 3mm;height:4mm;position:relative}
+  .zb span{position:absolute;left:50%;top:2.2mm;transform:translateX(-50%);white-space:nowrap;background:var(--soft);
+       padding:0 2.5mm;font-size:4.2mm;font-weight:700;color:var(--green)}
+  .fig.cli{padding-bottom:9mm}
+  /* ── fig 2: virtual memory ───────────────────────── */
+  .vm{background:var(--soft);border-radius:4.5mm;padding:5mm 5mm 4.5mm;margin-top:4mm}
+  .vm-cols{display:grid;grid-template-columns:1fr 17mm 1fr;align-items:stretch}
+  .proc{background:#fff;border-radius:3.5mm;padding:3.4mm;box-shadow:0 0 0 .35mm var(--line)}
+  .ph{font-size:4.3mm;font-weight:700;margin-bottom:2.4mm}
+  .cell{display:grid;grid-template-columns:24mm 1fr;align-items:center;border-radius:1.8mm;padding:1.7mm 2.2mm;background:var(--soft)}
+  .cell+.cell{margin-top:1.6mm}
+  .cell em{font:3.4mm var(--mono);font-style:normal;color:var(--ink3)}
+  .cell span{font-family:var(--mono);font-size:3.55mm;color:var(--ink);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .cell small{font-family:var(--sans);font-size:3.3mm;color:var(--ink3);margin-left:1mm}
+  .cell.hole{background:#fff;box-shadow:inset 0 0 0 .35mm var(--red)}
+  .cell.hole span{font-family:var(--sans);color:var(--red);font-weight:650}
+  .cell.key{background:var(--green-soft);box-shadow:inset 0 0 0 .45mm var(--green)}
+  .cell.key span{color:var(--green);font-weight:700}
+  .iso{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5mm;position:relative}
+  .iso::before{content:"";position:absolute;top:0;bottom:0;left:50%;border-left:.6mm dashed var(--ink3)}
+  .iso .x{position:relative;width:8mm;height:8mm;border-radius:50%;background:var(--red);color:#fff;font:700 4.4mm var(--sans);display:grid;place-items:center}
+  .iso .lbl{position:relative;background:var(--soft);font-size:3.5mm;font-weight:650;color:var(--ink2);text-align:center;line-height:1.3;padding:1mm 0}
+  .vm-db{display:grid;grid-template-columns:1fr 17mm 1fr;margin-top:9mm;align-items:center}
+  .db{grid-column:3;background:var(--ink);color:#fff;border-radius:3.5mm;padding:3mm 3.6mm;position:relative}
+  .db::before{content:"";position:absolute;left:50%;top:-8.4mm;width:.7mm;height:7.4mm;background:var(--green);transform:translateX(-50%)}
+  .db::after{content:"";position:absolute;left:50%;top:-9.2mm;transform:translateX(-50%);border-bottom:2.4mm solid var(--green);border-left:1.7mm solid transparent;border-right:1.7mm solid transparent}
+  .db b{display:block;font-size:4.2mm}
+  .db span{display:block;font-size:3.5mm;color:#C7C7CC;margin-top:.8mm}
+  .db code{background:#2C2C2E;color:#fff;font-size:3.3mm}
+  .up{grid-column:1;grid-row:1;text-align:right;font-size:3.7mm;color:var(--ink2);line-height:1.4;padding-right:3mm}
+  .up b{color:var(--green)}
+
+  /* boundary table */
+  .bound{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3mm;margin-top:5mm}
+  .bcol{border-radius:4mm;padding:4mm 4mm 4.2mm}
+  .bcol h4{display:flex;align-items:center;gap:2mm;font-size:4.7mm;font-weight:750;margin-bottom:2.6mm}
+  .bcol h4 i{width:6.4mm;height:6.4mm;border-radius:50%;display:grid;place-items:center;font:800 3.9mm var(--sans);font-style:normal;color:#fff}
+  .bcol ul{list-style:none;display:flex;flex-direction:column;gap:2mm}
+  .bcol li{font-size:4.05mm;line-height:1.45;color:var(--ink2);padding-left:3.2mm;position:relative}
+  .bcol li::before{content:"";position:absolute;left:0;top:2.1mm;width:1.3mm;height:1.3mm;border-radius:50%;background:var(--ink3)}
+  .bcol li b{color:var(--ink);font-weight:650}
+  .bcol code{font-size:3.5mm}
+  .bcol.use{background:var(--green-soft)} .bcol.use h4 i{background:var(--green)} .bcol.use li::before{background:var(--green)}
+  .bcol.block{background:var(--ink);color:#fff} .bcol.block h4 i{background:#fff;color:var(--ink)} .bcol.block li{color:#D1D1D6} .bcol.block li b{color:#fff} .bcol.block li::before{background:#fff}
+  .bcol.block code{background:#2C2C2E;color:#fff}
+  .bcol.limit{background:#fff;box-shadow:inset 0 0 0 .35mm var(--line)} .bcol.limit h4 i{background:var(--ink3)}
+  .meaning{margin-top:5mm;border-left:1mm solid var(--green);padding:.6mm 0 .6mm 4.4mm}
+  .meaning p{font-size:5.05mm}
+
+  /* ── implementation ──────────────────────────────── */
+  .build{display:grid;grid-template-columns:repeat(4,1fr);gap:2.4mm;margin:4mm 0 5mm}
+  .build div{background:var(--soft);border-radius:3mm;padding:3mm 3.2mm}
+  .build em{display:block;font:600 3.3mm var(--mono);font-style:normal;color:var(--green);margin-bottom:.8mm}
+  .build b{display:block;font-size:4.3mm;font-weight:700;line-height:1.3}
+  .build span{display:block;font-size:3.6mm;color:var(--ink3);margin-top:.8mm;line-height:1.35}
+  .shot{position:relative;border-radius:3.4mm;overflow:hidden;outline:.35mm solid #000}
+  .shot img{display:block;width:100%}
+  .pin{position:absolute;width:6.6mm;height:6.6mm;border-radius:50%;background:var(--green-hi);color:#000;font:750 3.8mm var(--sans);
+       display:grid;place-items:center;transform:translate(-50%,-50%);box-shadow:0 0 0 .9mm rgba(0,0,0,.55)}
+  .pins{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3mm;margin-top:4mm}
+  .pins div{display:grid;grid-template-columns:5.6mm 1fr;gap:2mm;font-size:4.05mm;line-height:1.45;color:var(--ink2)}
+  .pins i{width:5.6mm;height:5.6mm;border-radius:50%;background:var(--green-hi);color:#000;font:750 3.3mm var(--sans);font-style:normal;display:grid;place-items:center}
+  .cmds{margin-top:4.5mm;display:flex;flex-direction:column;gap:2mm}
+  .cmds div{display:grid;grid-template-columns:52mm 1fr;gap:3mm;align-items:baseline;font-size:4.5mm;color:var(--ink2)}
+  .cmds code{font-size:4mm;font-weight:600;background:none;padding:0}
+
+  /* ── results ─────────────────────────────────────── */
+  table{width:100%;border-collapse:collapse;font-size:4.35mm}
+  th{text-align:left;font-weight:700;padding:2.2mm 2.4mm;border-bottom:.45mm solid var(--ink);font-size:4.1mm}
+  td{padding:2.3mm 2.4mm;border-bottom:.3mm solid var(--line);vertical-align:top;color:var(--ink2);line-height:1.45}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  td.ok{color:var(--green);font-weight:700;white-space:nowrap}
+  .term{background:#0B0B0C;border-radius:4.5mm;padding:4.6mm 5.5mm;margin-top:4.5mm;font:3.75mm/1.62 var(--mono);color:#D1D1D6}
+  .term .gap{height:2.2mm}
+  .term .c{color:var(--green-hi)}.term .m{color:#8E8E93}.term .q{color:#fff}.term .r{color:#FF9F0A}
+  .refs{margin-top:7mm}
+  .refs h5{font-size:6.4mm;font-weight:750;letter-spacing:-.015em;padding-bottom:2mm;margin-bottom:3mm;border-bottom:.5mm solid var(--ink)}
+  .refs ol{padding-left:4.6mm;font-size:3.85mm;line-height:1.48;color:var(--ink2)}
+  .refs li+li{margin-top:.8mm}
+
+  /* ── linkedin card ───────────────────────────────── */
+  .li{border-radius:5mm;box-shadow:inset 0 0 0 .35mm var(--line);padding:5mm 5.5mm 4.5mm;margin-top:5mm;background:#fff}
+  .li-head{display:flex;align-items:center;gap:3.4mm}
+  .li-head img{width:12mm;height:12mm;border-radius:50%}
+  .li-head .who b{display:block;font-size:4.8mm;font-weight:700}
+  .li-head .who span{display:block;font-size:3.6mm;color:var(--ink3);margin-top:.4mm}
+  .li-head .src{margin-left:auto;font-size:3.6mm;font-weight:650;color:var(--ink3);background:var(--soft);border-radius:99px;padding:1mm 3mm}
+  .li-body{display:grid;grid-template-columns:1fr 1.05fr;gap:4.5mm;align-items:start;margin-top:3.6mm}
+  .li-text{font-size:4.1mm;line-height:1.58;color:var(--ink)}
+  .li-text b{font-weight:700}
+  .li-text .more{color:var(--ink3)}
+  .li-img{display:block;width:100%;border-radius:2.6mm;outline:.3mm solid var(--line)}
+  .li-foot{display:flex;align-items:center;gap:6mm;margin-top:3.4mm;padding-top:3mm;border-top:.3mm solid var(--line);font-size:4.1mm;color:var(--ink2)}
+  .li-foot span{display:flex;align-items:center;gap:1.6mm}
+  .li-foot svg{width:4.6mm;height:4.6mm}
+  .li-foot b{color:var(--ink);font-weight:700}
+  .li-foot .tail{margin-left:auto;color:var(--ink3);font-size:3.7mm}
+</style></head>
+<body><div class="page">
+
+<header>
+  <svg class="mark" viewBox="0 0 48 56" fill="none" aria-hidden="true">
+    <defs><mask id="hm" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="56"><rect width="48" height="56" fill="#fff"/>
+      <g stroke="#000" stroke-width="3.4" stroke-linecap="round"><path d="M13.5 36.5 Q24 46.5 34.5 36.5"/><path d="M16.4 41.2 L14.4 44.8"/><path d="M24 43.6 V47.6"/><path d="M31.6 41.2 L33.6 44.8"/></g></mask></defs>
+    <path d="M13.5 26 V17.5 a10.5 10.5 0 0 1 21 0 V26" stroke="#F5F5F7" stroke-width="5.4"/>
+    <rect x="3" y="23.5" width="42" height="31" rx="9.5" fill="#F5F5F7" mask="url(#hm)"/>
+    <g stroke="#30D158" stroke-width="3.4" stroke-linecap="round"><path d="M13.5 36.5 Q24 46.5 34.5 36.5"/><path d="M16.4 41.2 L14.4 44.8"/><path d="M24 43.6 V47.6"/><path d="M31.6 41.2 L33.6 44.8"/></g>
+  </svg>
+  <div class="titles">
+    <h1>blind-vault <span class="bar">|</span> 아이디어에서 오픈소스까지</h1>
+    <div class="byline"><span>전시자</span>인공지능융합전공 2024310767 안예준</div>
+  </div>
+  <div class="repo">
+    <div class="lab">
+      <div class="gh"><svg viewBox="0 0 16 16" fill="#fff"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.290 6.530 5.470 7.590.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</div>
+      <div class="url">AnYejun/blind-vault</div>
+      <div class="go">repo 가기 →</div>
+    </div>
+    <div class="tile"><img src="qr-styled.svg" alt="GitHub repo QR"></div>
+  </div>
+</header>
+
+<main>
+
+  <section style="grid-area:abs">
+    <div class="sec-h"><b>Abstract</b></div>
+    <p>Claude Code로 작업할 때마다 <strong>“API 키는 .env 파일에 직접 넣어주세요”</strong>라는 말을 들었다. 이 작은 불편에서 출발해 문제를 정의하고, 설계를 뒤집고, 하루 만에 만들어 실제 키로 검증한 뒤 오픈소스로 공개하기까지의 과정을 담았다.</p>
+    <p>결과물 blind-vault는 비밀 값을 macOS Keychain(암호화 DB)에 두고, AI 에이전트에게는 값 없는 <strong>이름표(포인터)</strong>만 건넨다. AI는 키를 한 번도 보지 않고 API 호출·배포·로그인을 끝낸다.</p>
+    <div class="journey">
+      <div><em>Background</em><b>문제 발견</b></div>
+      <div><em>Method</em><b>설계 뒤집기</b></div>
+      <div><em>Implementation</em><b>하루 만에 구현</b></div>
+      <div><em>Results</em><b>실제 키로 검증</b></div>
+      <div><em>Conclusion</em><b>공개 · 공유</b></div>
+    </div>
+  </section>
+
+  <section style="grid-area:bg">
+    <div class="sec-h"><b>Background</b></div>
+    <div class="cc">
+      <div class="cc-bar"><i></i><i></i><i></i><span>claude — ~/my-app</span></div>
+      <div class="cc-body">
+        <div class="u">&gt; <b>이 앱 Fly에 배포해줘</b></div>
+        <div class="a"><i>⏺</i><div>배포하려면 FLY_API_TOKEN이 필요해요. 보안상 제가 키를<br>직접 받을 수는 없어서, <mark>API 키는 .env 파일에 직접 넣어주세요.</mark></div></div>
+        <div class="t">⎿&nbsp; <span>FLY_API_TOKEN=</span>여기에_토큰_붙여넣기</div>
+      </div>
+    </div>
+    <p>처음엔 사소한 불편이었다. 그런데 프로젝트마다 반복되자 질문이 생겼다. <strong>“AI가 키를 못 보는 건 그대로 두고, 손은 AI가 움직이게 할 수 없을까?”</strong></p>
+    <p>기존 .env 방식은 키가 <strong>평문 파일과 대화 기록에 남고</strong>, 키가 바뀔 때마다 <strong>복사·붙여넣기</strong>가 반복된다(그림 1 왼쪽).</p>
+  </section>
+
+  <section class="flow">
+    <div class="sec-h"><b>Method</b></div>
+    <p>첫 아이디어는 <strong>“키를 암호화해 두고, 필요할 때 AI가 풀게 하자”</strong>였다. 하지만 푸는 순간 값은 AI의 화면에 찍히고 기록에 남는다. 그래서 설계를 뒤집었다. <strong>AI의 화면에는 이름표만 오가고, 값은 화면 아래에서만 흐르게 한다.</strong></p>
+    <div class="fig cli">
+      <div class="screens">
+        <div class="scr bad">
+          <div class="scr-h"><span class="pill red">✕ 기존 .env 방식</span><span>AI가 보는 터미널 화면</span></div>
+          <div class="tw">
+            <div class="l"><span class="p">$</span> cat .env</div>
+            <div class="l"><span class="lk">GEMINI_API_KEY=AIzaSyD8xQ…</span><em>← 키가 화면에 찍힘</em></div>
+            <div class="l"><span class="p">$</span> curl -H "x-goog-api-key: <span class="lk">AIzaSyD8xQ…</span>" https://…</div>
+          </div>
+          <div class="scr-note">AI에게 <b>화면에 찍힌 글자 = 입력</b>이다. 키가 그대로 대화 기록에 남는다.</div>
+        </div>
+        <div class="scr good">
+          <div class="scr-h"><span class="pill green">✓ blind-vault</span><span>AI가 보는 터미널 화면</span></div>
+          <div class="tw">
+            <div class="l"><span class="p">$</span> vault ls</div>
+            <div class="l dim">gemini-api-key&nbsp; $GEMINI_API_KEY&nbsp; googleapis.com<em>← 이름표뿐</em></div>
+            <div class="l"><span class="p">$</span> vault use gemini-api-key -- curl https://…<em>← 이름만</em></div>
+            <div class="l ok">{"text": "Claude just called me, blindly…"}<em>← 결과만</em></div>
+          </div>
+          <div class="scr-note">화면에 오가는 건 <b>이름표 · 명령 · 결과</b>뿐. 키는 한 번도 화면에 오르지 않는다.</div>
+        </div>
+      </div>
+      <div class="edge">
+        <span class="dn">명령 한 줄 ↓</span>
+        <span class="lbl">화면 경계 — 여기부터는 AI가 볼 수 없다 · <code>vault use</code> 한 줄이 실제로 하는 일</span>
+        <span class="upa">↑ 가려진 결과 글자만</span>
+      </div>
+      <div class="pipe">
+        <div class="st"><i>1</i><b>이름표 찾기</b><code>manifest.json</code><span>gemini-api-key → <br>$GEMINI_API_KEY<br><u>값 칸은 없다</u></span></div>
+        <div class="st gate"><i>2</i><b>사용처 검사</b><code>googleapis.com ∈ 명령?</code><span>아니면 <b>SCOPE BLOCK</b><br>실행 자체를 안 함</span></div>
+        <div class="st val"><i>3</i><b>금고 열기</b><code>security find-generic-password -w</code><span>Keychain → vault 메모리<br>화면엔 출력하지 않음</span></div>
+        <div class="st val"><i>4</i><b>쪽지 건네기</b><code>GEMINI_API_KEY=•••• curl …</code><span>curl 프로세스에게만<br>환경변수로 전달</span></div>
+        <div class="st val"><i>5</i><b>API 호출</b><code>curl → https → Google</code><span>키는 암호화된<br>HTTPS로만 나감</span></div>
+        <div class="st"><i>6</i><b>출력 가림</b><code>stdout | redact</code><span>키와 같은 글자 →<br><b>[REDACTED]</b></span></div>
+      </div>
+      <div class="zone"><div class="zb"><span>비밀 값이 존재하는 유일한 구간 — AI 화면 밖 · 1초 미만 · 끝나면 사라짐</span></div></div>
+    </div>
+    <p class="cap"><b>그림 1. 터미널 한 줄 뒤에서 일어나는 일.</b> AI가 아는 세상은 터미널 화면, 즉 자기가 친 글자와 돌아온 글자뿐이다. 기존 방식은 키가 그 화면에 찍힌다. blind-vault에선 키가 화면 아래 ③~⑤ 구간에서만 잠깐 존재하고 사라진다.</p>
+  </section>
+
+  <section style="grid-area:pri">
+    <div class="sec-h"><b>Principle</b></div>
+    <p><strong>포인터는 값이 아니라 값이 ‘어디 있는지’를 가리킨다.</strong> 가리키기만 해서는 내용을 볼 수 없고, 그 위치를 따라갈(역참조) 수 있어야 값이 나온다. blind-vault의 이름표도 같다. AI는 이름표를 쥐고 있지만, 그 위치를 따라가 값을 꺼내는 일은 운영체제가 vault와 실행 프로그램에게만 허락한다.</p>
+    <div class="vm">
+      <div class="vm-cols">
+        <div class="proc">
+          <div class="ph">AI 에이전트의 메모리</div>
+          <div class="cell"><em>0x7ff7…1a20</em><span>"vault use gemini-api-key …"</span></div>
+          <div class="cell hole"><em>0x7ff7…1a40</em><span>키 없음 — 다른 데이터</span></div>
+          <div class="cell"><em>0x7ff7…1a60</em><span>"gemini-api-key" <small>이름표</small></span></div>
+        </div>
+        <div class="iso"><div class="x">✕</div><div class="lbl">프로세스<br>격리</div></div>
+        <div class="proc">
+          <div class="ph">vault · curl의 메모리</div>
+          <div class="cell"><em>0x7ff7…1a20</em><span>argv: curl https://…</span></div>
+          <div class="cell key"><em>0x7ff7…1a40</em><span>"sk-9f3a…" <small>진짜 키</small></span></div>
+          <div class="cell"><em>0x7ff7…1a60</em><span>GEMINI_API_KEY=•••• <small>쪽지</small></span></div>
+        </div>
+      </div>
+      <div class="vm-db">
+        <div class="db"><b>Keychain (암호화 DB)</b><span>디스크엔 <code>9c 4f e1 07 …</code> 같은 암호문으로만 저장</span></div>
+        <div class="up">운영체제가 잠금을 풀어<br><b>vault에게만</b> 복호화해 건넨다 →</div>
+      </div>
+    </div>
+    <p class="cap"><b>그림 2. 같은 주소, 다른 세상.</b> 프로세스마다 메모리 지도가 따로 있다. 같은 주소가 vault 쪽에선 키를, AI 쪽에선 전혀 다른 것을 가리킨다. 그래서 AI는 이름표로 <b>일을 시킬 수는 있어도</b> 값까지 따라갈 수는 없다.</p>
+    <div class="bound">
+      <div class="bcol use"><h4><i>✓</i>쓸 수 있다</h4><ul>
+        <li><b>API 호출·배포</b><br><code>vault use</code></li>
+        <li><b>웹 로그인 입력</b><br><code>vault type</code></li>
+        <li>어떤 키가 있는지 보고 <b>골라 쓰기</b></li></ul></div>
+      <div class="bcol block"><h4><i>✕</i>막는다</h4><ul>
+        <li>값을 대화·화면·파일로 <b>보기</b></li>
+        <li>허용 안 된 주소로 <b>보내기</b></li>
+        <li>실수로 출력된 값 → <code>[REDACTED]</code></li>
+        <li>엉뚱한 창에 <b>입력하기</b></li></ul></div>
+      <div class="bcol limit"><h4><i>!</i>못 막는다</h4><ul>
+        <li>AI가 금고 조회 명령을 <b>일부러</b> 직접 실행 → 규칙과 사용자 승인으로만 막음</li>
+        <li>키를 받은 프로그램 자체가 <b>악성</b>인 경우</li></ul></div>
+    </div>
+    <p class="cap"><b>표 1. 쓸 수 있는 범위와 보호의 경계.</b></p>
+    <div class="meaning">
+      <p><strong>의의.</strong> 이 방식은 AI를 ‘믿고 맡기는’ 대신 <strong>권한을 구조로 나눈다.</strong> 일을 하는 권한(이름표)과 비밀을 아는 권한(값)을 떼어내, AI에게 꼭 필요한 권한만 준다(최소 권한 원칙[1]). 위임과 보안 중 하나를 포기하지 않아도 된다.</p>
+    </div>
+  </section>
+
+  <section style="grid-area:impl">
+    <div class="sec-h"><b>Implementation</b></div>
+    <p>작은 것부터 하루 동안 키웠다. 원리를 먼저 증명하고, 사람이 쓰기 편한 형태로 옮기고, 마지막에 AI가 스스로 쓰도록 규칙을 붙였다.</p>
+    <div class="build">
+      <div><em>v0.1</em><b>Bash 명령어</b><span>200줄로 원리 검증</span></div>
+      <div><em>v0.2</em><b>웹 대시보드</b><span>사람용 화면</span></div>
+      <div><em>v0.3</em><b>메뉴바 앱</b><span>“웹 말고 프로그램으로”</span></div>
+      <div><em>Skill</em><b>Claude Code 규칙</b><span>AI가 스스로 쓰도록</span></div>
+    </div>
+    <div class="shot">
+      <img src="app-dark.png" alt="blind-vault 메뉴바 앱 화면">
+      <span class="pin" style="left:24%;top:39.5%">1</span>
+      <span class="pin" style="left:68.2%;top:41.5%">2</span>
+      <span class="pin" style="left:77.2%;top:96.3%">3</span>
+    </div>
+    <div class="pins">
+      <div><i>1</i>이름표 목록. AI가 볼 수 있는 건 여기까지다.</div>
+      <div><i>2</i>값은 가려진 채 Keychain 밖으로 나오지 않는다.</div>
+      <div><i>3</i>⌥⌘V로 어디서든 열고, 폼에서 키를 바로 금고에 넣는다.</div>
+    </div>
+    <p class="cap"><b>그림 3. blind-vault 메뉴바 앱 (Rust · Tauri).</b> 사람은 앱으로 키를 관리하고, AI는 같은 목록을 명령어로 쓴다.</p>
+    <p style="margin-top:4.5mm">만들다 보니 버그도 나왔다. <code>sh</code>로만 쓰도록 허용한 키가 <code>should</code>라는 단어에도 통과됐다. 글자가 포함됐는지만 보던 판정을 <strong>단어 경계 기준</strong>으로 다시 설계해, <code>example.com.evil.io</code> 같은 위장 주소까지 막게 됐다.</p>
+
+  </section>
+
+  <section style="grid-area:res">
+    <div class="sec-h"><b>Results</b></div>
+    <table>
+      <thead><tr><th>실험</th><th>확인한 것</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td>사용처 판정</td><td>서브도메인 허용, <code>example.com.evil.io</code> 같은 위장 주소 차단 등 6가지 경우</td><td class="ok">6 / 6</td></tr>
+        <tr><td>출력 가림</td><td>프로그램이 키를 일반 출력·오류 출력으로 내보낼 때</td><td class="ok">둘 다 가림</td></tr>
+        <tr><td>실제 API 호출</td><td>AI가 키를 보지 않고 Gemini API 호출</td><td class="ok">응답 수신</td></tr>
+        <tr><td>로그인 입력</td><td>GitHub 로그인 폼에 아이디·비밀번호 자동 입력</td><td class="ok">입력 완료</td></tr>
+        <tr><td>엉뚱한 창 보호</td><td>채팅 창이 앞에 있을 때 입력 시도</td><td class="ok">0자, 중단</td></tr>
+      </tbody>
+    </table>
+    <p class="cap"><b>표 2. 기능 검증.</b> 모든 실험은 실제 macOS Keychain과 실제 키로 수행했다.</p>
+    <div class="term">
+      <span class="c">$</span> vault use gemini-api-key -- curl https://generativelanguage.googleapis.com/…<br>
+      <span class="m">Gemini ▸</span> <span class="q">“Yejun, Claude just called me, <i>blindly</i> using my API key.</span><br>
+      <span class="q">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Congrats on that slick new blind-vault setup!”</span><div class="gap"></div>
+      <span class="c">$</span> vault use test-key -- sh -c 'echo "leaked: $KEY"'<br>
+      leaked: <span class="c">[REDACTED:test-key]</span><div class="gap"></div>
+      <span class="c">$</span> vault type github-login --account --enter<br>
+      <span class="r">vault: frontmost app is 'Claude', not a browser — aborted, nothing typed.</span>
+    </div>
+    <p class="cap"><b>그림 4. 실제 실행 기록.</b> Gemini의 실제 답장: “Claude가 방금 내 API 키를 <i>눈 감고</i> 써서 날 불렀네요.” 세 번째는 채팅 창에 비밀번호가 입력될 뻔한 상황을 도구가 스스로 막은 기록이다.</p>
+    <div class="refs">
+      <h5>References</h5>
+      <ol>
+        <li>J. H. Saltzer, M. D. Schroeder. The Protection of Information in Computer Systems. <i>Proc. IEEE</i> 63(9), 1975.</li>
+        <li>OWASP. <i>Top 10 for LLM Applications</i>: Prompt Injection, Sensitive Information Disclosure. 2025.</li>
+        <li>Apple Inc. <i>Keychain Services</i>. Apple Developer Documentation.</li>
+        <li>Infisical. <i>agent-vault</i>. GitHub, 2026.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section style="grid-area:con">
+    <div class="sec-h"><b>Conclusion</b></div>
+    <p>완성된 도구는 GitHub에 <strong>MIT 라이선스로 공개</strong>하고, 설치 스크립트·데모 영상·하루 동안의 제작 기록(STORY.md)을 함께 올렸다. 이어 ‘1일 1오픈소스’ 2일차로 LinkedIn에 공유했다.</p>
+    <p>만들며 배운 것도 있다. 같은 문제를 다룬 프로젝트(Infisical agent-vault[4] 등)가 이미 있었다. 그래도 <strong>내가 매일 겪은 불편</strong>에서 출발하니, 서버 없이 내 Mac 하나로 도는 가벼운 도구라는 다른 자리가 보였다. 다음 목표는 값을 넘기지 않고 <strong>사용 권한만</strong> 다른 사람·에이전트와 나누는 것이다.</p>
+    <div class="li">
+      <div class="li-head"><img src="avatar.png" alt=""><div class="who"><b>Yejun Ahn</b><span>Founder @ warmboot · AI Researcher</span></div><span class="src">LinkedIn</span></div>
+      <div class="li-body"><div class="li-text"><b>&lt;방학동안 1일 1오픈소스 만들기 프로젝트&gt;<br>2일차: env파일에 API키를 붙여넣지 마세요!!</b><br>오늘의 오픈소스는 Blind Vault입니다. 다들 claude code 쓰다가 “API 키는 .env에 직접 넣어주세요”라는 말 들어보셨나요?<br><br>claude는 정책상 API 키나 비밀번호 유출에 굉장히 민감하게 반응해서, 직접 시크릿을 줄 수 없게 되어 있습니다. … <span class="more">더보기</span></div>
+      <img class="li-img" src="../assets/app.png" alt=""></div>
+      <div class="li-foot">
+        <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#0A66C2"/><path d="M7.5 11h2v6h-2zm3 6V11.2l2.2-3.4c.3-.5 1.1-.3 1.1.3V10.5h2.6c.7 0 1.2.6 1.1 1.3l-.7 4.3c-.1.5-.6.9-1.1.9z" fill="#fff"/></svg><b>13</b></span>
+        <span>노출 <b>796</b></span>
+        <span class="tail">github.com/AnYejun/blind-vault</span>
+      </div>
+    </div>
+    <p class="cap"><b>그림 5. LinkedIn 공유 게시물.</b> 아이디어에서 시작한 도구가 공개된 뒤 처음 받은 반응.</p>
+  </section>
+
+</main>
+</div></body></html>
