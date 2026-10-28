@@ -1,160 +1,353 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Blind Vault</title>
 <style>
+  /* ── tokens: dark (default) ─────────────────────────────────────────── */
   :root{
-    --txt:#F2F3F5; --dim:#A6ABB2; --faint:#6E747C; --green:#27DBA2;
-    --line:rgba(255,255,255,.10); --line-soft:rgba(255,255,255,.065);
-    --glass:rgba(255,255,255,.045); --hover:rgba(255,255,255,.06);
-    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --win:rgba(30,30,32,.70); --win-solid:#1C1C1E; --sheet:#2C2C2E;
+    --ink:#F5F5F7; --ink2:#A1A1A6; --ink3:#6E6E73;
+    --line:rgba(255,255,255,.075); --line2:rgba(255,255,255,.12);
+    --group:rgba(255,255,255,.045); --hover:rgba(255,255,255,.055);
+    --field:rgba(255,255,255,.075); --field-focus:rgba(255,255,255,.11);
+    --primary-bg:#F5F5F7; --primary-ink:#1C1C1E;
+    --green:#30D158; --red:#FF453A; --ring:rgba(10,132,255,.55);
+    --shadow:0 24px 70px rgba(0,0,0,.55),0 0 0 .5px rgba(255,255,255,.08);
+    --h0:#0A84FF; --h1:#30D158; --h2:#FF9F0A; --h3:#BF5AF2; --h4:#FF375F; --h5:#64D2FF; --h6:#5E5CE6;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
+    --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    color-scheme:dark;
   }
+  /* ── tokens: light ─────────────────────────────────────────────────── */
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --win:rgba(246,246,248,.80); --win-solid:#F5F5F7; --sheet:#FFFFFF;
+      --ink:#1D1D1F; --ink2:#6E6E73; --ink3:#AEAEB2;
+      --line:rgba(0,0,0,.075); --line2:rgba(0,0,0,.12);
+      --group:rgba(255,255,255,.72); --hover:rgba(0,0,0,.035);
+      --field:rgba(0,0,0,.05); --field-focus:#FFFFFF;
+      --primary-bg:#1D1D1F; --primary-ink:#FFFFFF;
+      --green:#28A745; --red:#FF3B30;
+      --shadow:0 24px 70px rgba(0,0,0,.18),0 0 0 .5px rgba(0,0,0,.12);
+      --h0:#007AFF; --h1:#34C759; --h2:#FF9500; --h3:#AF52DE; --h4:#FF2D55; --h5:#30B0C7; --h6:#5856D6;
+      color-scheme:light;
+    }
+  }
+  :root[data-theme="light"]{
+    --win:rgba(246,246,248,.80); --win-solid:#F5F5F7; --sheet:#FFFFFF;
+    --ink:#1D1D1F; --ink2:#6E6E73; --ink3:#AEAEB2;
+    --line:rgba(0,0,0,.075); --line2:rgba(0,0,0,.12);
+    --group:rgba(255,255,255,.72); --hover:rgba(0,0,0,.035);
+    --field:rgba(0,0,0,.05); --field-focus:#FFFFFF;
+    --primary-bg:#1D1D1F; --primary-ink:#FFFFFF;
+    --green:#28A745; --red:#FF3B30;
+    --shadow:0 24px 70px rgba(0,0,0,.18),0 0 0 .5px rgba(0,0,0,.12);
+    --h0:#007AFF; --h1:#34C759; --h2:#FF9500; --h3:#AF52DE; --h4:#FF2D55; --h5:#30B0C7; --h6:#5856D6;
+    color-scheme:light;
+  }
+
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;background:transparent}
-  body{color:var(--txt);-webkit-font-smoothing:antialiased;overflow:hidden;
-       font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;user-select:none}
-  .window{display:flex;flex-direction:column;height:100vh;border-radius:16px;overflow:hidden;
-       background:rgba(12,14,18,.55);border:1px solid var(--line);
-       box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
-  .window::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.4;border-radius:16px;
-       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
-  header{display:flex;align-items:center;gap:12px;padding:15px 20px;flex:0 0 auto;
-       border-bottom:1px solid var(--line-soft);cursor:default}
-  h1{font-size:15px;font-weight:650;letter-spacing:-.01em;pointer-events:none}
-  h1 .glyph{margin-right:8px;filter:grayscale(1) brightness(1.3)}
-  .sub{color:var(--faint);font-size:12.5px;pointer-events:none}
-  .local{margin-left:auto;display:flex;align-items:center;gap:7px;color:var(--faint);
-       font-size:11px;font-family:var(--mono);background:var(--glass);
-       border:1px solid var(--line-soft);border-radius:99px;padding:3.5px 11px;pointer-events:none}
-  .local .dot{width:6px;height:6px;border-radius:50%;background:var(--green);
-       box-shadow:0 0 10px rgba(39,219,162,.8)}
-  main{display:grid;grid-template-columns:1.55fr 1fr;flex:1;min-height:0}
-  section.panel{padding:8px 8px 12px;overflow-y:auto}
-  aside.panel{border-left:1px solid var(--line-soft);padding:8px 8px 12px;overflow-y:auto;
-       background:rgba(255,255,255,.02)}
-  .panel h2{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-       color:var(--faint);padding:11px 13px 7px}
-  .panel h2 span{text-transform:none;letter-spacing:0;font-weight:500}
-  .row{display:flex;align-items:center;gap:12px;padding:10px 13px;border-radius:10px;transition:background .12s}
+  body{font:13px/1.4 var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;
+       overflow:hidden;user-select:none;cursor:default}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:default}
+  svg{display:block}
+
+  .win{position:relative;height:100vh;display:flex;flex-direction:column;
+       background:var(--win);border-radius:12px;overflow:hidden;
+       box-shadow:inset 0 0 0 .5px var(--line2)}
+  html.web .win{background:var(--win-solid)}
+
+  /* toolbar */
+  .toolbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+           height:52px;padding:0 14px 0 18px;flex:0 0 auto}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:13.5px;
+         letter-spacing:-.01em;pointer-events:none}
+  .brand svg{color:var(--ink)}
+  .search{display:flex;align-items:center;gap:6px;width:280px;height:28px;padding:0 9px;
+          background:var(--field);border-radius:7px;color:var(--ink3);transition:background .15s}
+  .search:focus-within{background:var(--field-focus);box-shadow:0 0 0 3px var(--ring)}
+  .search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);
+                font:13px var(--sans)}
+  .search input::placeholder{color:var(--ink3)}
+  .tools{justify-self:end;display:flex;gap:6px}
+  .icon-btn{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;color:var(--ink2);
+            transition:background .12s,color .12s}
+  .icon-btn:hover{background:var(--hover);color:var(--ink)}
+
+  /* section header */
+  .head{display:flex;align-items:flex-end;justify-content:space-between;padding:6px 22px 10px;flex:0 0 auto}
+  .head h1{font-size:20px;font-weight:700;letter-spacing:-.02em}
+  .head .count{color:var(--ink3);font-weight:500;margin-left:6px}
+  .head p{display:flex;align-items:center;gap:6px;color:var(--ink2);font-size:12px}
+
+  /* list */
+  .scroll{flex:1;overflow-y:auto;padding:0 16px 16px}
+  .group{background:var(--group);border-radius:10px;box-shadow:inset 0 0 0 .5px var(--line)}
+  .row{position:relative;display:flex;align-items:center;gap:12px;min-height:56px;padding:9px 12px}
+  .row+.row::before{content:"";position:absolute;top:0;left:56px;right:0;height:.5px;background:var(--line2)}
   .row:hover{background:var(--hover)}
-  .id{flex:1;min-width:0}
-  .name{font-family:var(--mono);font-size:13px;font-weight:600}
-  .meta{color:var(--dim);font-size:11.5px;margin-top:2.5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .env{font-family:var(--mono);color:var(--dim);font-size:11px}
-  .chip{font-family:var(--mono);font-size:10px;color:var(--dim);background:var(--glass);
-       border:1px solid var(--line-soft);border-radius:99px;padding:1px 8px}
-  .chip.acct{cursor:pointer;transition:.12s}
-  .chip.acct:hover{color:var(--txt);background:rgba(255,255,255,.09)}
-  .used{color:var(--faint);font-size:11px;white-space:nowrap}
-  .btn{border:1px solid var(--line-soft);background:var(--glass);color:var(--dim);
-       border-radius:7px;padding:4.5px 10px;font-size:11.5px;cursor:pointer;transition:.12s}
-  .btn:hover{color:var(--txt);background:rgba(255,255,255,.1);border-color:var(--line)}
-  .btn.danger:hover{color:#F2F3F5;background:rgba(244,112,103,.2);border-color:rgba(244,112,103,.32)}
-  .empty{padding:48px 22px;text-align:center;color:var(--faint);font-size:13px;line-height:1.7}
-  .empty b{color:var(--dim)}
-  form{padding:4px 13px;display:flex;flex-direction:column;gap:9px}
-  label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-       color:var(--faint);display:block;margin-bottom:4px}
-  input{background:rgba(0,0,0,.30);border:1px solid var(--line-soft);border-radius:8px;
-       color:var(--txt);padding:7.5px 10px;font-size:13px;width:100%;outline:none;transition:.15s}
-  input:focus{border-color:rgba(39,219,162,.55);box-shadow:0 0 0 3px rgba(39,219,162,.12)}
-  input[type=password]{font-family:var(--mono);letter-spacing:.18em}
-  input::placeholder{color:#565C64;letter-spacing:normal;font-family:-apple-system,sans-serif}
-  .save{background:linear-gradient(180deg,#FFFFFF,#DFE2E6);border:none;color:#0A0B0D;
-       font-weight:650;font-size:13px;border-radius:8px;padding:9px;cursor:pointer;margin-top:4px;
-       box-shadow:0 1px 3px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.9);transition:.12s}
-  .save:hover{filter:brightness(.96)}
-  .save:active{transform:translateY(1px)}
-  .note{color:var(--faint);font-size:11px;line-height:1.6;padding:11px 13px 6px}
-  .note b{color:var(--dim)}
-  .bar{display:flex;align-items:center;gap:10px;padding:10px 18px;flex:0 0 auto;
-       border-top:1px solid var(--line-soft);color:var(--faint);
-       font-size:11px;font-family:var(--mono);background:rgba(0,0,0,.16)}
-  .bar .hints{margin-left:auto;display:flex;gap:13px;align-items:center;
-       font-family:-apple-system,sans-serif;font-size:11px;white-space:nowrap}
-  kbd{font-family:var(--mono);font-size:10px;color:var(--dim);background:var(--glass);
-       border:1px solid var(--line-soft);border-bottom-width:2px;border-radius:5px;padding:1px 6px;margin-right:4px}
-  #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);
-       background:rgba(28,30,34,.85);border:1px solid var(--line);color:var(--txt);
-       padding:10px 18px;border-radius:11px;font-size:12.5px;transition:.25s;opacity:0;
-       box-shadow:0 16px 48px rgba(0,0,0,.5);z-index:9}
-  #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-</style></head><body>
-<div class="window">
-  <header data-tauri-drag-region>
-    <h1><span class="glyph">🕶️</span>Blind Vault</h1>
-    <span class="sub">secrets your agent can use — but never see</span>
-    <span class="local"><span class="dot"></span>local · Keychain</span>
+  .row:first-child{border-radius:10px 10px 0 0}.row:last-child{border-radius:0 0 10px 10px}
+  .row:only-child{border-radius:10px}
+  .tile{flex:0 0 32px;height:32px;border-radius:8px;display:grid;place-items:center;
+        font-weight:650;font-size:14px;color:var(--c);
+        background:color-mix(in srgb,var(--c) 17%,transparent)}
+  .main{flex:1;min-width:0}
+  .title{display:flex;align-items:baseline;gap:7px;white-space:nowrap}
+  .title b{font-weight:600;font-size:13.5px;letter-spacing:-.01em}
+  .title span{color:var(--ink2);font-size:12px}
+  .sub{display:flex;align-items:center;gap:6px;margin-top:3px;color:var(--ink2);font-size:11.5px;
+       white-space:nowrap;overflow:hidden}
+  .sub code{font:11px var(--mono);color:var(--ink2)}
+  .pill{font:10.5px var(--mono);color:var(--ink2);padding:1px 7px;border-radius:99px;
+        box-shadow:inset 0 0 0 .5px var(--line2)}
+  .pill.acct{font-family:var(--sans);font-size:11px;cursor:pointer}
+  .pill.acct:hover{color:var(--ink);background:var(--hover)}
+  .sep{color:var(--ink3)}
+  .vault{display:flex;align-items:center;gap:5px;color:var(--ink3);font:11px var(--mono);white-space:nowrap}
+  .used{width:86px;text-align:right;color:var(--ink3);font-size:11.5px;white-space:nowrap}
+  .acts{display:flex;gap:2px;opacity:.55;transition:opacity .12s}
+  .row:hover .acts{opacity:1}
+  .act{height:26px;padding:0 9px;border-radius:6px;display:flex;align-items:center;gap:5px;
+       color:var(--ink2);font-size:12px}
+  .act:hover{background:var(--hover);color:var(--ink)}
+  .act.del:hover{color:var(--red)}
+
+  .empty{display:grid;place-items:center;text-align:center;padding:56px 24px;color:var(--ink2)}
+  .empty svg{color:var(--ink3);margin:0 auto 14px}
+  .empty h2{color:var(--ink);font-size:15px;font-weight:600;margin-bottom:5px}
+  .empty p{font-size:12.5px;max-width:300px;line-height:1.5}
+  .empty .btn{margin-top:16px}
+
+  /* status bar */
+  .status{display:flex;align-items:center;gap:7px;height:32px;padding:0 18px;flex:0 0 auto;
+          border-top:.5px solid var(--line);color:var(--ink3);font-size:11.5px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  .status .keys{margin-left:auto;display:flex;gap:14px}
+  kbd{font:11px var(--sans);color:var(--ink2);margin-right:4px}
+
+  /* buttons */
+  .btn{height:28px;padding:0 14px;border-radius:7px;font-size:13px;font-weight:500;
+       background:var(--field);color:var(--ink)}
+  .btn:hover{background:var(--field-focus)}
+  .btn.primary{background:var(--primary-bg);color:var(--primary-ink)}
+  .btn.primary:hover{filter:brightness(.92)}
+  .btn.danger{background:var(--red);color:#fff}
+
+  /* sheet */
+  .scrim{position:absolute;inset:0;display:none;align-items:flex-start;justify-content:center;
+         padding-top:46px;background:rgba(0,0,0,.28);z-index:5}
+  .scrim.open{display:flex}
+  .sheet{width:440px;background:var(--sheet);border-radius:14px;box-shadow:var(--shadow);
+         padding:20px;animation:drop .22s cubic-bezier(.2,.9,.3,1)}
+  @keyframes drop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
+  .sheet h3{font-size:15px;font-weight:650;letter-spacing:-.01em}
+  .sheet .lede{color:var(--ink2);font-size:12px;line-height:1.5;margin:5px 0 16px}
+  .fields{border-radius:9px;background:var(--field);overflow:hidden}
+  .field{display:flex;align-items:center;min-height:36px;padding:0 12px}
+  .field+.field{box-shadow:inset 0 .5px 0 var(--line2)}
+  .field label{flex:0 0 104px;color:var(--ink2);font-size:12.5px}
+  .field input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);
+               font:13px var(--sans);height:36px;user-select:text}
+  .field input::placeholder{color:var(--ink3)}
+  .field input[type=password]{font-family:var(--mono);letter-spacing:.12em}
+  .field input[type=password]::placeholder{letter-spacing:normal;font-family:var(--sans)}
+  .field.key{box-shadow:inset 0 .5px 0 var(--line2),inset 3px 0 0 var(--green)}
+  .sheet .row-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+
+  #toast{position:absolute;left:50%;bottom:46px;transform:translate(-50%,16px);opacity:0;
+         background:var(--sheet);color:var(--ink);box-shadow:var(--shadow);border-radius:99px;
+         padding:8px 16px;font-size:12.5px;transition:.22s;pointer-events:none;z-index:9;white-space:nowrap}
+  #toast.show{transform:translate(-50%,0);opacity:1}
+</style></head>
+<body>
+<div class="win">
+  <header class="toolbar" data-tauri-drag-region>
+    <div class="brand">
+      <svg width="15" height="17.5" viewBox="0 0 48 56" fill="none" aria-hidden="true"><defs><mask id="bvm1" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="56"><rect width="48" height="56" fill="#fff"/><g stroke="#000" stroke-width="3.4" stroke-linecap="round"><path d="M13.5 36.5 Q24 46.5 34.5 36.5"/><path d="M16.4 41.2 L14.4 44.8"/><path d="M24 43.6 V47.6"/><path d="M31.6 41.2 L33.6 44.8"/></g></mask></defs><path d="M13.5 26 V17.5 a10.5 10.5 0 0 1 21 0 V26" stroke="currentColor" stroke-width="5.4"/><rect x="3" y="23.5" width="42" height="31" rx="9.5" fill="currentColor" mask="url(#bvm1)"/></svg>
+      Blind Vault
+    </div>
+    <label class="search">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+      <input id="q" placeholder="Search" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="tools">
+      <button class="icon-btn" id="addBtn" title="New Secret (⌘N)">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2.5v11M2.5 8h11"/></svg>
+      </button>
+    </div>
   </header>
-  <main>
-    <section class="panel">
-      <h2>Pointers <span>— the only thing Claude ever reads</span></h2>
-      <div id="list"><div class="empty">loading…</div></div>
-    </section>
-    <aside class="panel">
-      <h2>Add a secret</h2>
-      <form id="add" autocomplete="off">
-        <div><label>Name</label><input name="name" placeholder="openai-api-key · github-login" required></div>
-        <div><label>Account / ID <span style="text-transform:none;letter-spacing:0">(optional — for logins)</span></label><input name="account" placeholder="you@example.com"></div>
-        <div><label>Value — API key or password</label><input name="value" type="password" placeholder="pasted here → straight to Keychain" required></div>
-        <div><label>Service</label><input name="service" placeholder="OpenAI"></div>
-        <div><label>Allowed for</label><input name="allow" placeholder="api.openai.com, curl"></div>
-        <div><label>Env var</label><input name="env" placeholder="OPENAI_API_KEY (auto)"></div>
-        <div><label>Note</label><input name="note" placeholder="personal, pay-as-you-go"></div>
-        <button class="save" type="submit">Save to Keychain</button>
-      </form>
-      <p class="note"><b>Where the value goes:</b> this form → macOS Keychain, in-process.
-      Never rendered back, never readable by the agent. No “reveal” button — by design.</p>
-    </aside>
-  </main>
-  <div class="bar">
-    Claude reads this list without a value column — because there isn't one.
-    <span class="hints"><span><kbd>⌥⌘V</kbd>Toggle</span><span><kbd>esc</kbd>Hide</span><span><kbd>↵</kbd>Save</span></span>
+
+  <div class="head">
+    <h1>All Secrets<span class="count" id="count"></span></h1>
+    <p>
+      <svg width="11" height="12" viewBox="0 0 22 24" fill="currentColor"><path d="M5 10V7a6 6 0 0112 0v3h1.5A2.5 2.5 0 0121 12.5v8a2.5 2.5 0 01-2.5 2.5h-15A2.5 2.5 0 011 20.5v-8A2.5 2.5 0 013.5 10zm3 0h6V7a3 3 0 00-6 0z"/></svg>
+      Values stay in your Keychain. Agents only ever see this list.
+    </p>
   </div>
+
+  <div class="scroll"><div id="list"></div></div>
+
+  <footer class="status">
+    <span class="dot"></span>Local · macOS Keychain
+    <span class="keys"><span><kbd>⌥⌘V</kbd>Toggle</span><span><kbd>⌘N</kbd>New</span><span><kbd>esc</kbd>Hide</span></span>
+  </footer>
+
+  <div class="scrim" id="addSheet">
+    <form class="sheet" id="add" autocomplete="off">
+      <h3>New Secret</h3>
+      <p class="lede">The value goes straight into your Keychain. Nobody can read it back — not even your agent.</p>
+      <div class="fields">
+        <div class="field"><label>Name</label><input name="name" placeholder="openai-api-key" required></div>
+        <div class="field key"><label>Value</label><input name="value" type="password" placeholder="API key or password" required></div>
+        <div class="field"><label>Account</label><input name="account" placeholder="Optional — for logins"></div>
+        <div class="field"><label>Service</label><input name="service" placeholder="OpenAI"></div>
+        <div class="field"><label>Allowed for</label><input name="allow" placeholder="api.openai.com"></div>
+        <div class="field"><label>Env variable</label><input name="env" placeholder="Automatic"></div>
+        <div class="field"><label>Note</label><input name="note" placeholder="Optional"></div>
+      </div>
+      <div class="row-btns">
+        <button type="button" class="btn" data-close>Cancel</button>
+        <button type="submit" class="btn primary">Save to Keychain</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="scrim" id="delSheet">
+    <div class="sheet">
+      <h3 id="delTitle">Delete secret?</h3>
+      <p class="lede">It will be removed from your Keychain and the pointer list. This can't be undone.</p>
+      <div class="row-btns">
+        <button type="button" class="btn" data-close>Cancel</button>
+        <button type="button" class="btn danger" id="delGo">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
 </div>
-<div id="toast"></div>
+
 <script>
-const inv=window.__TAURI__.core.invoke;
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let toastT;const toast=m=>{const t=document.getElementById("toast");t.textContent=m;
-  t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),3200);};
+const params = new URLSearchParams(location.search);
+if (params.get("theme")) document.documentElement.dataset.theme = params.get("theme");
+const TAURI = window.__TAURI__;
+if (!TAURI) document.documentElement.classList.add("web");
+
+// Opened in a plain browser (README, poster): run on demo pointers, never real ones.
+const TODAY = new Date().toISOString().slice(0, 10);
+const DEMO = { secrets: [
+  { name:"fly-api-token",  service:"Fly.io", env:"FLY_API_TOKEN",  allowed_for:["fly"], last_used:TODAY },
+  { name:"gemini-api-key", service:"Gemini", env:"GEMINI_API_KEY", allowed_for:["generativelanguage.googleapis.com"], last_used:TODAY },
+  { name:"github-login",   service:"GitHub", env:"GITHUB_LOGIN",   account:"you@example.com", allowed_for:["github.com"], last_used:"2026-10-21" },
+  { name:"openai-api-key", service:"OpenAI", env:"OPENAI_API_KEY", allowed_for:["api.openai.com"], last_used:null },
+  { name:"stripe-live",    service:"Stripe", env:"STRIPE_LIVE",    allowed_for:["api.stripe.com"], last_used:null },
+]};
+const demoInvoke = async (cmd, a = {}) => {
+  if (cmd === "list_secrets") return DEMO;
+  if (cmd === "add_secret") { DEMO.secrets.push({ name:a.name, service:a.service, account:a.account,
+      env:a.env || a.name.toUpperCase().replace(/[-.]/g,"_"),
+      allowed_for:(a.allow||"").split(",").map(s=>s.trim()).filter(Boolean), last_used:null });
+    return `Stored '${a.name}'. The value never left this machine.`; }
+  if (cmd === "remove_secret") { DEMO.secrets = DEMO.secrets.filter(s => s.name !== a.name); return `Removed '${a.name}'`; }
+  if (cmd === "copy_secret") return `'${a.name}' copied — clears in 30 s`;
+  if (cmd === "copy_account") return "Account copied";
+};
+const inv = TAURI ? TAURI.core.invoke : demoInvoke;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hue = s => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h % 7; };
+const usedLabel = d => !d ? "Never used" : d === TODAY ? "Used today"
+  : "Used " + new Date(d + "T00:00").toLocaleDateString("en-US", { month:"short", day:"numeric" });
+
+let toastT;
+const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("show");
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 2600); };
+
+const ICON_COPY = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/></svg>';
+const ICON_TRASH = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9.5h6.6L12 4"/></svg>';
+const ICON_LOCK = '<svg width="9" height="10" viewBox="0 0 22 24" fill="currentColor"><path d="M5 10V7a6 6 0 0112 0v3h1.5A2.5 2.5 0 0121 12.5v8a2.5 2.5 0 01-2.5 2.5h-15A2.5 2.5 0 011 20.5v-8A2.5 2.5 0 013.5 10zm3 0h6V7a3 3 0 00-6 0z"/></svg>';
+
+let all = [];
 async function refresh(){
-  const d=await inv("list_secrets"),el=document.getElementById("list");
-  if(!d.secrets||!d.secrets.length){el.innerHTML=
-    '<div class="empty"><b>No secrets yet.</b><br>Add your first on the right — Claude will find it by name, never by value.</div>';return;}
-  el.innerHTML=d.secrets.map(s=>`
-    <div class="row">
-      <div class="id">
-        <div class="name">${esc(s.name)}</div>
-        <div class="meta">
-          <span class="env">$${esc(s.env)}</span>
-          ${s.service?`<span>${esc(s.service)}</span>`:""}
-          ${s.account?`<span class="chip acct" title="click to copy the ID" onclick="copyAcct('${esc(s.name)}')">👤 ${esc(s.account)}</span>`:""}
-          ${(s.allowed_for||[]).map(a=>`<span class="chip">${esc(a)}</span>`).join("")}
+  const d = await inv("list_secrets");
+  all = d.secrets || [];
+  render();
+}
+function render(){
+  const q = $("#q").value.trim().toLowerCase();
+  const rows = all.filter(s => !q || [s.name, s.service, s.env, s.account, ...(s.allowed_for||[])]
+    .some(v => (v||"").toLowerCase().includes(q)));
+  $("#count").textContent = all.length ? all.length : "";
+  const el = $("#list");
+  if (!all.length) {
+    el.innerHTML = `<div class="empty">
+      <svg width="36" height="42" viewBox="0 0 48 56" fill="none" aria-hidden="true"><defs><mask id="bvm2" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="56"><rect width="48" height="56" fill="#fff"/><g stroke="#000" stroke-width="3.4" stroke-linecap="round"><path d="M13.5 36.5 Q24 46.5 34.5 36.5"/><path d="M16.4 41.2 L14.4 44.8"/><path d="M24 43.6 V47.6"/><path d="M31.6 41.2 L33.6 44.8"/></g></mask></defs><path d="M13.5 26 V17.5 a10.5 10.5 0 0 1 21 0 V26" stroke="currentColor" stroke-width="5.4"/><rect x="3" y="23.5" width="42" height="31" rx="9.5" fill="currentColor" mask="url(#bvm2)"/></svg>
+      <h2>No secrets yet</h2>
+      <p>Add an API key or login. Your agent will find it by name — never by value.</p>
+      <button class="btn primary" onclick="openAdd()">Add Secret</button></div>`;
+    return;
+  }
+  if (!rows.length) { el.innerHTML = `<div class="empty"><p>No matches for “${esc(q)}”.</p></div>`; return; }
+  el.innerHTML = `<div class="group">${rows.map(s => {
+    const label = s.service || s.name, n = esc(s.name);
+    return `<div class="row">
+      <div class="tile" style="--c:var(--h${hue(label)})">${esc(label[0].toUpperCase())}</div>
+      <div class="main">
+        <div class="title"><b>${n}</b>${s.service ? `<span>${esc(s.service)}</span>` : ""}</div>
+        <div class="sub"><code>$${esc(s.env)}</code>
+          ${s.account ? `<span class="pill acct" title="Copy account" onclick="copyAcct('${n}')">${esc(s.account)}</span>` : ""}
+          ${(s.allowed_for||[]).map(a => `<span class="pill">${esc(a)}</span>`).join("")}
         </div>
       </div>
-      <span class="used">${s.last_used?("used "+esc(s.last_used)):"never used"}</span>
-      <button class="btn" onclick="copyIt('${esc(s.name)}')">Copy 30s</button>
-      <button class="btn danger" onclick="rmIt('${esc(s.name)}')">Delete</button>
-    </div>`).join("");
+      <span class="vault">${ICON_LOCK}••••••••</span>
+      <span class="used">${usedLabel(s.last_used)}</span>
+      <div class="acts">
+        <button class="act" onclick="copyIt('${n}')">${ICON_COPY}Copy</button>
+        <button class="act del" title="Delete" onclick="askDel('${n}')">${ICON_TRASH}</button>
+      </div>
+    </div>`; }).join("")}</div>`;
 }
-async function copyIt(n){try{toast(await inv("copy_secret",{name:n}));}catch(e){toast(String(e));}}
-async function copyAcct(n){try{toast(await inv("copy_account",{name:n}));}catch(e){toast(String(e));}}
-async function rmIt(n){if(!confirm(`Delete '${n}' from Keychain + manifest?`))return;
-  try{toast(await inv("remove_secret",{name:n}));refresh();}catch(e){toast(String(e));}}
-document.getElementById("add").addEventListener("submit",async e=>{
+
+async function copyIt(n){ try { toast(await inv("copy_secret", { name:n })); } catch(e){ toast(String(e)); } }
+async function copyAcct(n){ try { toast(await inv("copy_account", { name:n })); } catch(e){ toast(String(e)); } }
+
+function openSheet(id){ $(id).classList.add("open"); }
+function closeSheets(){ document.querySelectorAll(".scrim.open").forEach(s => s.classList.remove("open")); }
+function openAdd(){ openSheet("#addSheet"); setTimeout(() => $('#add [name="name"]').focus(), 30); }
+let pendingDel = null;
+function askDel(n){ pendingDel = n; $("#delTitle").textContent = `Delete “${n}”?`; openSheet("#delSheet"); }
+
+$("#delGo").addEventListener("click", async () => {
+  try { toast(await inv("remove_secret", { name:pendingDel })); } catch(e){ toast(String(e)); }
+  closeSheets(); refresh();
+});
+document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closeSheets));
+document.querySelectorAll(".scrim").forEach(s => s.addEventListener("mousedown", e => { if (e.target === s) closeSheets(); }));
+$("#addBtn").addEventListener("click", openAdd);
+$("#q").addEventListener("input", render);
+
+$("#add").addEventListener("submit", async e => {
   e.preventDefault();
-  const f=Object.fromEntries(new FormData(e.target));
-  try{
-    const msg=await inv("add_secret",{name:f.name,value:f.value,service:f.service||"",
-      env:f.env||"",allow:f.allow||"",note:f.note||"",account:f.account||""});
-    e.target.reset();toast(msg);refresh();
-  }catch(err){toast(String(err));}
+  const f = Object.fromEntries(new FormData(e.target));
+  try {
+    const msg = await inv("add_secret", { name:f.name.trim(), value:f.value, service:f.service || "",
+      env:f.env || "", allow:f.allow || "", note:f.note || "", account:f.account || "" });
+    e.target.reset(); closeSheets(); toast(msg); refresh();
+  } catch(err){ toast(String(err)); }
 });
-window.addEventListener("keydown",e=>{
-  if(e.key==="Escape")window.__TAURI__.window.getCurrentWindow().hide();
+
+window.addEventListener("keydown", e => {
+  if (e.metaKey && e.key.toLowerCase() === "n") { e.preventDefault(); openAdd(); }
+  else if (e.metaKey && e.key.toLowerCase() === "f") { e.preventDefault(); $("#q").focus(); }
+  else if (e.key === "Escape") {
+    if (document.querySelector(".scrim.open")) closeSheets();
+    else if (TAURI) TAURI.window.getCurrentWindow().hide();
+  }
 });
-window.addEventListener("focus",refresh);
+window.addEventListener("focus", refresh);
+if (params.get("sheet") === "add") openAdd();
 refresh();
 </script>
 </body></html>
